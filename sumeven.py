@@ -1,3 +1,6 @@
+''' Write a code that displays the sum of all the even numbers from the given list.
+numbers = [12, 75, 150, 180, 145, 525, 50] '''
+
 numbers = [12, 75, 150, 180, 145, 525, 50]   # list of numbers
 x = 0                                        # initialise x as 0
 for i in numbers:                            # select each number from the array
