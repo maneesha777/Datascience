@@ -1,0 +1,103 @@
+/* Q.157 
+Say you have access to all the transactions for a given merchant acCOUNT. 
+Write a query to print the cumulative balance of the merchant acCOUNT at the END of each day, 
+WITH the total balance reset back to zero at the END of the month. 
+Output the transaction date and cumulative balance.*/
+
+
+CREATE TABLE transactions_merchant(
+		transaction_id INT,
+		type ENUM('DEPOSIT','WITHDRAWL'),
+		amount FLOAT,
+		transaction_date DATETIME
+	);
+INSERT INTO transactions_merchant 
+VALUES
+		(19153,'DEPOSIT',65.90,'2022-07-10 10:00:00'),
+		(53151,'DEPOSIT',178.55,'2022-07-08 10:00:00'),
+		(29776,'WITHDRAWL',25.90,'2022-07-08 10:00:00'),
+		(16461,'WITHDRAWL',45.99,'2022-07-08 10:00:00'),
+		(77134,'DEPOSIT',32.60,'2022-07-10 10:00:00');
+        
+SELECT DISTINCT(transaction_date),
+		ROUND(SUM(CASE
+			WHEN type ='DEPOSIT' THEN amount 
+            ELSE -amount 
+            END ) OVER(PARTITION BY transaction_date ORDER BY transaction_date), 2) AS balance
+FROM transactions_merchant
+
+
+
+/*  Q.158 
+Assume you are given the table below containing information on 
+Amazon customers and their spend on products belonging to various categories. 
+Identify the top two highest-grossing products within each category in 2022. 
+Output the category, product, and total spend. */
+
+CREATE TABLE product_spend(
+		category VARCHAR(20),
+		product VARCHAR(20),
+		user_id INT,
+		spend FLOAT,
+		transaction_date DATETIME
+	);
+INSERT INTO product_spend 
+VALUES
+		('APPLIANCE','REFRIGERATOR',165,246.00,'2021-12-26 12:00:00'),
+		('APPLIANCE','REFRIGERATOR',123,299.99,'2022-03-02 12:00:00'),
+		('APPLIANCE','WASHING MACHINE',123,219.80,'2022-03-02 12:00:00'),
+		('ELECTRONICS','VACUUM',178,152.00,'2022-04-05 12:00:00'),
+		('ELECTRONICS','WIRELESS HEADSET',156,249.90,'2022-07-08 12:00:00'),
+		('ELECTRONICS','VACUUM',145,189.00,'2022-07-15 12:00:00');
+    
+SELECT category,
+		product,
+        total_spend
+FROM ( 
+		SELECT category,
+				product,
+				ROUND(SUM(spend),2) AS total_spend,
+				DENSE_RANK() OVER(PARTITION BY category ORDER BY SUM(spend)  DESC) AS rnk
+		FROM product_spend
+        WHERE DATE_FORMAT(transaction_date,'%Y') = 2022
+        GROUP BY category,
+				product
+	) a
+WHERE rnk<=2
+
+
+
+/* Q.159 
+Facebook is analysing its user signup data for June 2022. 
+Write a query to generate the churn rate by week in June 2022. 
+Output the week number (1, 2, 3, 4, ...) and the corresponding churn rate rounded to 2 decimal places. */
+
+CREATE TABLE users_facebook(
+		user_id INT,
+		signup_date DATETIME,
+		last_login DATETIME
+	);
+INSERT INTO users_facebook 
+VALUES
+		(1001,'2022-06-01 12:00:00','2022-07-05 12:00:00'),
+		(1002,'2022-06-03 12:00:00','2022-06-15 12:00:00'),
+		(1004,'2022-06-02 12:00:00','2022-06-15 12:00:00'),
+		(1006,'2022-06-15 12:00:00','2022-06-27 12:00:00'),
+		(1012,'2022-06-16 12:00:00','2022-07-22 12:00:00');
+        
+WITH fb_signup AS (
+					SELECT *,
+							CASE
+								WHEN DATEDIFF(last_login, signup_date) < 28 THEN 'YES' ELSE 'NO' END AS churn,
+							CASE
+								WHEN signup_date BETWEEN '2022-05-30' AND '2022-06-05' THEN 1
+								WHEN signup_date BETWEEN '2022-06-06' AND '2022-06-12' THEN 2
+								ELSE 3
+								END AS signup_week            
+					FROM users_facebook
+				   )
+SELECT signup_week,
+		ROUND(COUNT(CASE
+						WHEN churn = 'yes'THEN user_id END)*100.00/COUNT(*), 2) AS churn_rate
+FROM fb_signup
+GROUP BY signup_week
