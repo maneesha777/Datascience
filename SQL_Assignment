@@ -1,3 +1,951 @@
+/* Q.79 
+Write a Query that prints a list of employee names (i.e.: the name attribute) 
+from the employee table in alphabetical order. */
+
+CREATE TABLE employee4(
+        employee_id INT,
+        name VARCHAR(20),
+        months INT,
+        salary INT
+    );
+INSERT INTO employee4 
+VALUES
+        (12228,'ROSE',15,1968),
+        (33645,'ANGELA',1,3443),
+        (45692,'FRANK',17,1608),
+        (56118,'PATRIK',7,1345),
+        (59725, 'LISA', 11, 2330),
+        (74197,'KINBERLY',16,4372),
+        (78454,'BONNIE',8,1771),
+        (83565,'MICHAEL',6,2017),
+        (98607,'TODD',5,3396),
+        (99989,'JOE',9,3573);
+	
+    SELECT name 
+    FROM employee4
+    ORDER BY name;
+    
+    
+ /* Q.80 
+Write a Query to obtain the year-on-year growth rate for the total spend of each product for each year. */
+
+CREATE TABLE user_transactions(
+        transaction_id INT,
+        product_id INT,
+        spend FLOAT,
+        transaction_date DATETIME
+    );
+INSERT INTO user_transactions 
+VALUES
+        (1341,123424,1500.60,'2019-12-31 12:00:00'),
+        (1423,123424,1000.20,'2020-12-31 12:00:00'),
+        (1623,123424,1246.44,'2021-12-31 12:00:00'),
+        (1322,123424,2145.32,'2022-12-31 12:00:00');
+
+SELECT EXTRACT(YEAR FROM transaction_date ) AS year,
+	product_id,
+        spend AS curr_year_spend,
+	pre_year_spend,
+        IFNULL(ROUND(diff_spend * 100 / pre_year_spend,2),0) AS yoy_rate  
+ FROM (
+	  SELECT *,
+		 LAG(spend,1,0) OVER(PARTITION BY product_id) AS pre_year_spend,
+		 (spend - LAG(spend) OVER(PARTITION BY product_id)) AS  diff_spend 
+          FROM user_transactions
+	   ) t1   
+    
+    
+  /* Q.82 Write a Query to obtain the active user retention in July 2022. 
+    Output the month (in numerical format 1, 2, 3) and the number of monthly active users (MAUs). */
+
+CREATE TABLE user_actions(
+        user_id INT,
+        event_id INT,
+        event_type ENUM('SIGN-IN','LIKE','COMMENT'),
+        event_date DATETIME
+    );
+INSERT INTO user_actions 
+VALUES
+        (445,7765,'SIGN-IN','2022-05-31 12:00:00'),
+        (742,6458,'SIGN-IN','2022-06-03 12:00:00'),
+        (445,3634,'LIKE','2022-06-05 12:00:00'),
+        (742,1374,'COMMENT','2022-06-05 12:00:00'),
+        (648,3124,'LIKE','2022-06-18 12:00:00');
+ 
+WITH cte AS (
+		SELECT *,
+			DATE_FORMAT(event_date, '%m') AS months
+		FROM user_actions
+		WHERE event_type IN ('SIGN-IN','LIKE','COMMENT')
+	     ),
+     cte1 AS (
+		 SELECT user_id,
+			months,
+                        event_type,
+			LAG(months)OVER(PARTITION BY user_id ORDER BY event_date) AS lag_month
+                 FROM cte       
+		)
+     
+     SELECT months,
+	    COUNT(user_id)OVER() AS monthly_active_users
+     FROM cte1
+     WHERE event_type IN ('SIGN-IN','LIKE','COMMENT') AND (months -lag_month) =1;     
+     
+     
+     
+  /* Q.83 Write a Query to report the median of searches made by a user. 
+    Round the median to one decimal point. */
+
+CREATE TABLE search_frequency(
+        searches INT,
+        num_users INT
+    );
+INSERT INTO search_frequency 
+VALUES
+        (1,2),
+        (2,2),
+        (3,3),
+        (4,1);
+        
+ WITH RECURSIVE cte AS(
+			  SELECT searches,
+				  num_users, 1 AS cnt
+			  FROM search_frequency
+                          UNION ALL
+                          SELECT searches,
+				 num_users,
+				 (cnt+1) AS cnt
+			  FROM cte
+                          WHERE cnt < num_users
+			),
+modi_cte AS (
+		SELECT *,
+		       COUNT(*) OVER() AS total_count,
+		       ROW_NUMBER() OVER() AS row_num
+		 FROM cte
+		 ORDER BY searches
+			)
+
+SELECT ROUND(AVG(searches),1) AS median
+FROM modi_cte
+WHERE row_num BETWEEN CEIL(total_count / 2) AND FLOOR((total_count / 2 )+1)  
+   
+    
+
+/* Q.85 Write a SQL Query that calculates the total time that the fleet of 
+   servers was running. The output should be in units of full days. */
+
+CREATE TABLE server_utilization(
+        server_id INT,
+        session_status VARCHAR(20),
+        status_time TIMESTAMP
+    );
+
+INSERT INTO server_utilization 
+VALUES
+        (1,'start','2022-08-02 10:00:00'),
+        (1,'stop','2022-08-04 10:00:00'),
+        (2,'start','2022-08-17 10:00:00'),
+        (2,'stop','2022-08-24 10:00:00');
+ 
+ 
+WITH up_time AS( 
+			SELECT *,
+				TIMESTAMPDIFF(DAY, status_time,end_time ) AS days
+			FROM (
+				SELECT *,
+					LEAD(status_time)OVER(PARTITION BY server_id ORDER BY status_time) AS end_time
+				FROM server_utilization
+				)b
+						
+		 )
+SELECT SUM(days) AS total_uptime_days
+FROM up_time
+
+
+/* Q.86 Sometimes, payment transactions are repeated by accident; it could be due to user error, 
+ API failure or a retry error that causes a credit card to be charged twice.
+Using the transactions table, identify any payments made at the same merchant with the 
+same credit card for the same amount within 10 minutes of each other. Count such repeated payments.*/
+
+
+CREATE TABLE transaction_table(
+        transaction_id INT,
+        merchant_id INT,
+        credit_card_id INT,
+        amount INT,
+        transaction_timestamp DATETIME
+    );
+
+INSERT INTO transaction_table 
+VALUES
+        (1,101,1,100,'2022-09-25 12:00:00'),
+        (2,101,1,100,'2022-09-25 12:08:00'),
+        (3,101,1,100,'2022-09-25 12:28:00'),
+        (4,102,2,300,'2022-09-25 12:00:00'),
+        (6,102,2,400,'2022-09-25 14:00:00');
+        
+WITH repeated_txn AS(
+			SELECT merchant_id,
+				credit_card_id,
+				amount,
+				transaction_timestamp,
+				count(*) OVER(  PARTITION BY merchant_id,credit_card_id,amount
+			                        ORDER BY transaction_timestamp
+			                        RANGE BETWEEN INTERVAL '10' MINUTE PRECEDING AND CURRENT ROW
+					      )AS repeat_count
+				FROM transaction_table) 
+							
+SELECT COUNT(*) as payment_count
+FROM repeated_txn
+WHERE repeat_count > 1 ; 
+
+
+/* Q.87 Write a SQL Query to find the bad experience rate in the first 14 days for new users who signed 
+-- up in June 2022. Output the percentage of bad experience rounded to 2 decimal places. */
+
+CREATE TABLE orders_table(
+        order_id INT,
+        customer_id INT,
+        trip_id INT,
+        status ENUM('COMPLETED SUCCESSFULLY','COMPLETED INCORRECTLY','NEVER_RECEIVED'),
+        order_timestamp TIMESTAMP
+    );
+INSERT INTO orders_table 
+VALUES  
+        (727424,8472,100463,'COMPLETED SUCCESSFULLY','2022-06-05 09:12:00'),
+        (242513,2341,100482,'COMPLETED INCORRECTLY','2022-06-05 14:40:00'),
+        (141367,1314,100362,'COMPLETED INCORRECTLY','2022-06-07 15:03:00'),
+        (582193,5421,100657,'NEVER_RECEIVED','2022-07-07 15:22:00'),
+        (253613,1314,100213,'COMPLETED SUCCESSFULLY','2022-06-12 13:43:00');
+
+
+CREATE TABLE trips(
+        dasher_id INT,
+        trip_id INT,
+        estimated_delivery_timestamp TIMESTAMP,
+        actual_delivery_timestamp TIMESTAMP
+    );
+INSERT INTO trips
+VALUES 
+        (101,100463,'2022-06-05 09:42:00','2022-06-05 09:38:00'),
+        (102,100482,'2022-06-05 15:10:00','2022-06-05 15:46:00'),
+        (101,100362,'2022-06-07 15:33:00','2022-06-07 16:45:00'),
+        (102,100657,'2022-07-07 15:52:00',NULL),
+        (103,100213,'2022-06-12 14:13:00','2022-06-12 14:10:00');
+
+
+CREATE TABLE customer_table(
+        customer_id INT,
+        signup_timestamp TIMESTAMP
+    );
+INSERT INTO customer_table 
+VALUES    
+        (8472,'2022-05-30 00:00:00'),
+        (2341,'2022-06-01 00:00:00'),
+        (1314,'2022-06-03 00:00:00'),
+        (1435,'2022-06-05 00:00:00'),
+        (5421,'2022-06-07 00:00:00');
+ 
+ SELECT ROUND((SUM(
+		     CASE
+		         WHEN (ot.status !='COMPLETED SUCCESSFULLY') 
+			  THEN 1 ELSE 0
+			   END)*100.00/COUNT(*)),2) AS bad_experience_rate
+ FROM orders_table ot
+ JOIN customer_table ct
+ ON ct.customer_id = ot.customer_id
+ WHERE TIMESTAMPDIFF(DAY,ot.order_timestamp, ct.signup_timestamp) <14
+		AND DATE_FORMAT(ct.signup_timestamp, '%Y-%m') = '2022-06';
+        
+        
+        
+        
+ 
+-- Q.102 SAME AS 101
+
+
+/* Q.111 
+Given the table schemas below,
+write a query to print the company_code, founder name, total number of lead managers, total number of senior managers, 
+total number of managers, and total number of employees. Order your output by ascending company_code. */
+
+CREATE TABLE company1(
+		company_code VARCHAR(20),
+		founder VARCHAR(20)
+	);
+INSERT INTO company1 
+VALUES
+		('C1','MONIKA'),
+		('C2','SAMANTHA');
+
+CREATE TABLE lead_manager(
+		lead_manager_code VARCHAR(20),
+		company_code VARCHAR(20)
+	);
+INSERT INTO lead_manager 
+VALUES
+		('LM1','C1'),
+		('LM2','C2');
+
+CREATE TABLE senior_manager(
+		senior_manager_code VARCHAR(20),
+		lead_manager_code VARCHAR(20),
+		company_code VARCHAR(20)
+	);
+INSERT INTO senior_manager 
+VALUES
+		('SM1','LM1','C1'),
+		('SM2','LM1','C1'),
+		('SM3','LM2','C2');  
+        
+CREATE TABLE manager(
+		manager_code VARCHAR(20),
+		senior_manager_code VARCHAR(20),
+		lead_manager_code VARCHAR(20),
+		company_code VARCHAR(20)
+	);
+INSERT INTO manager 
+VALUES
+		('M1','SM1','LM1','C1'),
+		('M2','SM3','LM2','C2'),
+		('M3','SM3','LM2','C2');  
+
+CREATE TABLE employ(
+		employee_code VARCHAR(20),
+		manager_code VARCHAR(20),
+		senior_manager_code VARCHAR(20),
+		lead_manager_code VARCHAR(20),
+		company_code VARCHAR(20)
+	);
+INSERT INTO employ
+VALUES
+		('E1','M1','SM1','LM1','C1'),
+		('E2','M1','SM1','LM1','C1'),
+		('E3','M2','SM3','LM2','C2'),
+		('E4','M3','SM3','LM2','C2');
+
+SELECT
+  c.company_code,
+  c.founder,
+  COUNT(DISTINCT lm.lead_manager_code)AS lead_manager_count,
+  COUNT(DISTINCT sm.senior_manager_code)AS senior_manager_count,
+  COUNT(DISTINCT m.manager_code) AS manager_count,
+  COUNT(DISTINCT e.employee_code) AS employeee_count
+FROM lead_manager lm
+LEFT JOIN senior_manager sm 
+ON lm.lead_manager_code = sm.lead_manager_code
+  
+LEFT JOIN manager m 
+ON m.senior_manager_code = sm.senior_manager_code
+  
+LEFT JOIN employ e 
+ON e.manager_code = m.manager_code
+  
+LEFT JOIN company1 c 
+ON c.company_code = lm.company_code
+GROUP BY 
+		c.company_code, 
+		c.founder
+ORDER BY c.company_code
+
+
+/* Q.112 
+Write a query to print all prime numbers less than or equal to 1000. 
+Print your result on a single line, and use the ampersand () character as your separator (instead of a space).*/
+
+WITH RECURSIVE numbers AS (
+						SELECT 1 AS n
+                        UNION
+                        SELECT  n +1
+                        FROM numbers
+                        WHERE n<1000
+					),
+                    
+	prime_number AS (
+						SELECT n1.n AS num
+						FROM numbers n1
+						JOIN numbers n2
+						ON MOD(n1.n, n2.n) = 0
+						GROUP BY n1.n
+						HAVING COUNT(n1.n) = 2
+                    )
+
+SELECT  GROUP_CONCAT(num ORDER BY num SEPARATOR '&') AS prime_numbers
+FROM prime_number                 
+
+
+/* Q.113
+Write a query to print the pattern P(20). 
+*
+* *
+* * *
+* * * *
+* * * * *   */
+
+WITH RECURSIVE pattern AS (
+				SELECT 1 AS n
+				UNION 
+                                SELECT n+1
+				FROM pattern
+                                WHERE n<20
+			   ) 
+SELECT REPEAT('* ', n) AS pattern
+FROM pattern
+                     
+
+
+/* Q.114
+P(R) represents a pattern drawn by Julia in R rows. The following pattern represents P(5):
+* * * * *
+* * * *
+* * *
+* *
+*
+Write a query to print the pattern P(20).*/ 
+
+WITH RECURSIVE pattern AS (
+				SELECT 20 AS n
+				UNION 
+                                SELECT n-1
+				FROM pattern
+                                WHERE n>1
+			    ) 
+SELECT REPEAT('* ', n) AS pattern
+FROM pattern
+  
+-- Q.115 SAME AS Q.103
+
+
+-- Q.116 SAME AS Q.79
+
+
+-- Q.117 SAME AS Q.104
+
+
+-- Q.118 SAME AS Q.105
+
+
+-- Q.119 SAME AS Q.80
+
+
+-- Q.120 SAME AS Q.81
+
+
+-- Q.121 SAME AS Q.82
+
+
+-- Q.122 SAME AS Q.83
+
+
+-- Q.123 SAME AS Q.84
+
+
+-- Q.124 SAME AS Q.85
+
+
+-- Q.125 SAME AS Q.86
+
+
+-- Q.126 SAME AS Q.87
+
+
+-- Q.127 SAME AS Q.68
+
+
+-- Q.128 SAME AS Q.55
+
+
+-- Q.129 SAME AS Q.90
+
+
+-- Q.130 SAME AS Q.91
+
+
+-- Q.131 SAME AS Q.92
+
+
+-- Q.132 SAME AS Q.50
+
+
+-- Q.133 SAME AS Q.94
+
+
+-- Q.134 SAME AS Q.94
+
+
+-- Q.135 SAME AS Q.101
+
+
+-- Q.136 SAME AS Q.101
+
+
+-- Q.137 SAME AS Q.106
+
+
+-- Q.138 SAME AS Q.105
+
+
+-- Q.139 SAME AS Q.105
+
+
+-- Q.140 SAME AS Q.105                          
+
+
+-- Q.142 SAME AS Q.111
+
+
+/* Q.143 
+Write a query to output all such symmetric pairs in ascending order by the value of X. 
+List the rows such that X1 ≤ Y1.*/
+
+CREATE TABLE functions(
+		x INT,
+		y INT
+	);
+INSERT INTO functions 
+VALUES
+		(20,20),
+		(20,20),
+		(20,21),
+		(23,22),
+		(22,23),
+		(21,20);
+
+WITH serial_number AS(
+			SELECT *,
+				ROW_NUMBER()OVER(ORDER BY x, y) AS n
+			FROM functions
+					)
+SELECT DISTINCT s1.x,
+       s1.y
+FROM serial_number s1
+JOIN serial_number s2
+ON  s1.x = s2.y 
+AND s1.y = s2.x 
+
+WHERE s1.x <= s1.y AND s1.n != s2.n
+
+
+/* Q.144 
+Write a query to output the names of those students whose best friends got offered a higher salary than them. 
+Names must be ordered by the salary amount offered to the best friends. 
+It is guaranteed that no two students get the same salary offer.*/
+
+CREATE TABLE students4(
+		id INT,
+		name VARCHAR(20)
+	);
+INSERT INTO students4 
+VALUES
+		(1,'ASHLEY'),
+		(2,'SAMANTHA'),
+		(3,'JULIA'),
+		(4,'SCARLET');
+
+CREATE TABLE friends(
+		id INT,
+		friend_id INT
+	);
+INSERT INTO friends 
+VALUES
+		(1,2),
+		(2,3),
+		(3,4),
+		(4,1);
+
+CREATE TABLE packages(
+		id INT,
+		salary FLOAT
+	);
+
+INSERT INTO packages 
+VALUES
+		(1,15.20),
+		(2,10.06),
+		(3,11.55),
+		(4,12.12);
+        
+SELECT name
+FROM friends f
+JOIN packages p1
+ON f.id = p1.id
+JOIN packages p2
+ON f.friend_id = p2.id
+JOIN students4 s
+ON f.id = s.id
+WHERE p2.salary > p1.salary
+
+
+/*  Q.145 
+Write a query to print the respective hacker_id and name of hackers who achieved full scores for  more than one challenge. 
+Order your output in descending order by the total number of challenges in which the hacker earned a full score. 
+If more than one hacker received full scores in the same number of challenges, then sort them by ascending hacker_id. */
+
+CREATE TABLE hackers(
+		hacker_id INT,
+		name VARCHAR(20)
+	);
+INSERT INTO hackers 
+VALUES
+		(5580,'ROSE'),
+		(8439,'ANGELA'),
+		(27205,'FRANK'),
+		(52243,'PATRICK'),
+		(52348,'LISA'),
+		(57645,'KIMBERLY'),
+		(77726,'BONNIE'),
+		(83082,'MICHAEL'),
+		(86870,'TODD'),
+		(90411,'JOE');
+
+CREATE TABLE difficulty(
+		difficulty_level INT,
+		score INT
+	);
+INSERT INTO difficulty 
+VALUES
+		(1,20),
+		(2,30),
+		(3,40),
+		(4,60),
+		(5,80),
+		(6,100),
+		(7,120);
+
+CREATE TABLE challenges(
+		challenge_id INT,
+		hacker_id INT,
+		difficulty_level INT
+	);
+INSERT INTO challenges 
+VALUES
+		(4810,77726,4),
+		(21089,27205,1),
+		(36566,5580,7),
+		(66730,52243,6),
+		(71055,52243,2);
+
+CREATE TABLE submissions(
+		submission_id INT,
+		hacker_id INT,
+		challenge_id INT,
+		score INT
+	);
+    INSERT INTO submissions 
+    VALUES
+			(68628, 77726, 36566, 30),
+			(65300, 77726, 21089, 10),
+			(40326, 52243, 36566, 77),
+			(8941, 27205, 4810, 4),
+			(83554, 77726, 66730, 30),
+			(43353, 52243, 66730, 0),
+			(55385, 52348, 71055, 20),
+			(39784, 27205, 71055, 23),
+			(94613, 86870, 71055, 30),
+			(45788, 52348, 36566, 0),
+			(93058, 86870, 36566, 30),
+			(7344, 8439, 66730, 92),
+			(2721, 8439, 4810, 36),
+			(523, 5580, 71055, 4),
+			(49105, 52348, 66730, 0),
+			(55877, 57645, 66730, 80),
+			(38355, 27205, 66730, 35),
+			(3924, 8439, 36566, 80),
+			(97397, 90411, 66730, 100),
+			(84162, 83082, 4810, 40),
+			(97431, 90411, 71055, 30);
+
+SELECT h.hacker_id,
+         h.name
+FROM submissions s
+JOIN challenges c 
+ON c.challenge_id = s.challenge_id 
+JOIN difficulty d 
+ON d.difficulty_level = c.difficulty_level
+JOIN hackers h 
+ON h.hacker_id = s.hacker_id
+WHERE s.score = d.score
+GROUP BY h.hacker_id,
+         h.name
+HAVING COUNT(s.score) > 1         
+ORDER BY COUNT(*) DESC,
+         h.hacker_id
+
+
+
+/* Q.146 
+Write a query to output the start and END dates of projects listed by the number of days it took to complete the project in ascending order. 
+If there is more than one project that have the same numberof completion days, 
+then order by the start date of the project. */
+
+CREATE TABLE projects(
+		task_id INT,
+		start_date DATE,
+		end_date DATE
+	);
+INSERT INTO projects 
+VALUES
+		(1,'2015-10-01','2015-10-02'),
+		(2,'2015-10-02','2015-10-03'),
+		(3,'2015-10-03','2015-10-04'),
+		(4,'2015-10-13','2015-10-14'),
+		(5,'2015-10-14','2015-10-15'),
+		(6,'2015-10-28','2015-10-29'),
+		(7,'2015-10-30','2015-10-31');
+
+
+WITH temp_project AS (
+                        SELECT start_date, 
+                                end_date,
+                                DATE_SUB(start_date, INTERVAL rnk DAY) AS new_date
+                        FROM (
+                                SELECT start_date, 
+                                        end_date,
+                                        ROW_NUMBER() OVER (ORDER BY start_date) AS rnk
+                                 FROM projects
+				) temp
+			)
+
+SELECT MIN(start_date) AS project_start_date,
+	   MAX(end_date) AS project_end_date
+FROM temp_project
+GROUP BY new_date
+ORDER BY DATEDIFF(MAX(end_date),MIN(start_date))
+
+
+/* Q.147 
+In an effort to identify high-value customers, Amazon asked for your help to obtain data about users who go on shopping sprees. 
+A shopping spree occurs when a user makes purchASes on 3 or more consecutive days. 
+List the user IDs who have gone on at leASt 1 shopping spree in ascending order. */
+
+CREATE TABLE transaction_amazon(
+		user_id INT,
+		amount FLOAT,
+		transaction_date DATETIME
+	);
+INSERT INTO transaction_amazon 
+VALUES
+		(1,9.99,'2022-08-01 10:00:00'),
+		(1,55,'2022-08-17 10:00:00'),
+		(2,149.5,'2022-08-05 10:00:00'),
+		(2,4.89,'2022-08-06 10:00:00'),
+		(2,34,'2022-08-07 10:00:00');
+        
+WITH t1 AS (
+		SELECT user_id,
+			DATE_FORMAT(transaction_date,'%Y-%m-%d')AS transaction_date,
+			ROW_NUMBER() OVER(PARTITION BY user_id ORDER BY transaction_date) AS num
+		FROM transaction_amazon
+	     ),
+	t2 AS (   
+            	 SELECT user_id,
+                         DATE_SUB(transaction_date, INTERVAL num DAY) AS difference
+		 FROM t1
+		)
+SELECT user_id
+FROM t2
+GROUP BY user_id
+HAVING COUNT(difference) >=3        
+
+
+/*Q.148 
+You are given a table of PayPal payments showing the payer, the recipient, and the amount paid. 
+A two-way unique relationship is established WHEN two people sEND money back and forth. 
+Write a query to find the number of two-way unique relationships in this data.*/
+
+CREATE TABLE payments(
+		payer_id INT,
+		recipient_id INT,
+		amount INT
+	);
+INSERT INTO payments 
+VALUES
+		(101,201,30),
+		(201,101,10),
+		(101,301,20),
+		(301,101,80),
+		(201,301,70); 
+        
+WITH payments_cte AS (
+                        SELECT DISTINCT p1.payer_id, 
+                                p1.recipient_id
+                        FROM payments p1 
+                        JOIN payments p2
+                        ON p1.payer_id = p2.recipient_id 
+                        AND p2.payer_id = p1.recipient_id
+						AND p1.payer_id < p2.payer_id
+					 )
+
+SELECT COUNT(*) unique_relationships
+FROM payments_cte;
+
+
+/* Q.149 
+Write a query to obtain the list of customers whose first transaction was valued at $50 or more.
+Output the number of users. */
+
+CREATE TABLE user_transactions1(
+		transaction_id INT,
+		user_id INT,
+		spend FLOAT,
+		transaction_date TIMESTAMP
+	);
+INSERT INTO user_transactions1 
+VALUES
+		(759274,111,49.50,'2022-02-03 00:00:00'),
+		(850371,111,51.00,'2022-03-15 00:00:00'),
+		(615348,145,36.30,'2022-03-22 00:00:00'),
+		(137424,156,151.00,'2022-04-04 00:00:00'),
+		(248475,156,87.00,'2022-04-16 00:00:00');
+
+SELECT COUNT(*) AS users
+FROM (
+	SELECT *,
+		DENSE_RANK()OVER(PARTITION BY user_id ORDER BY transaction_date ) as rnk
+	FROM user_transactions1
+		) a
+WHERE rnk =1 AND spend > 50
+
+
+/* Q.150 
+Write a query to obtain the SUM of the odd-numbered and even-numbered meASurements on a particular day, 
+in two different columns. */
+
+CREATE TABLE measurments(
+		measurment_id INT,
+		measurment_value FLOAT,
+		measurment_time DATETIME
+	);
+INSERT INTO measurments 
+VALUES
+		(131233,1109.51,'2022-07-10 09:00:00'),
+		(135211,1662.74,'2022-07-10 11:00:00'),
+		(523542,1246.24,'2022-07-10 13:15:00'),
+		(143562,1124.50,'2022-07-11 15:00:00'),
+		(346462,1234.14,'2022-07-11 16:45:00');
+        
+WITH daily_cte AS(        
+		    SELECT *,
+			   DATE_FORMAT(measurment_time, '%Y-%m-%d 00:00:00') AS measurment_day,
+			    ROW_NUMBER() OVER(PARTITION BY DATE_FORMAT(measurment_time, '%Y-%m-%d 00:00:00')) AS rn
+		     FROM measurments
+		  )
+		  
+SELECT measurment_day,
+	ROUND(SUM(CASE WHEN MOD(rn,2) !=0 THEN measurment_value END), 2) AS odd_sum,
+        ROUND(SUM(CASE WHEN MOD(rn,2) =0 THEN measurment_value END), 2) AS even_sum
+FROM daily_cte
+GROUP BY measurment_day
+
+
+Q.151 SAME AS Q.147
+
+
+/*Q.152 
+The Airbnb Booking RecommENDations team is trying to understand the "substitutability" of two rentals and whether one rental is a good substitute for another. 
+They want you to,
+write a query to find the unique combination of two Airbnb rentals WITH the same exact amenities offered.
+Output the COUNT of the unique combination of Airbnb rentals. */
+
+CREATE TABLE rental_amenities(
+		rental_id INT,
+		amenity VARCHAR(20)
+	);
+INSERT INTO rental_amenities 
+VALUES
+		(123,'POOL'),
+		(123,'KITCHEN'),
+		(234,'HOT TUB'),
+		(234,'FIREPLACE'),
+		(345,'KITCHEN'),
+		(345,'POOL'),
+		(456,'POOL');
+WITH cte_amenities AS(
+			SELECT rental_id,
+			       GROUP_CONCAT(amenity ORDER BY amenity) AS amenities
+			FROM rental_amenities
+                        GROUP BY rental_id
+					)
+   SELECT COUNT(DISTINCT amenities) AS matching_airbnb
+   FROM cte_amenities
+   GROUP BY amenities
+   HAVING COUNT(DISTINCT rental_id) > 1
+                                        
+
+
+/* Q.153 
+Write a query to calculate the return on ad spend (ROAS) for each advertiser across all ad campaigns. 
+Round your answer to 2 decimal places, and order your output by the advertiser_id. */
+
+CREATE TABLE ad_campaigns(
+		campaign_id INT,
+		spend INT,
+		revenue FLOAT,
+		advertiser_id INT
+	);
+INSERT INTO ad_campaigns 
+VALUES
+		(1,5000,7500,3),
+		(2,1000,900,1),
+		(3,3000,12000,2),
+		(4,500,2000,4),
+		(5,100,400,4);
+        
+SELECT advertiser_id,
+		ROUND(total_revenue/total_spend, 2) AS ROAS
+FROM (
+		SELECT advertiser_id,
+		SUM(spend) AS total_spend,
+		SUM(revenue) AS total_revenue
+		FROM ad_campaigns
+		GROUP BY advertiser_id
+	  )c
+ORDER BY advertiser_id
+
+
+/* Q.154 
+Write a query that shows the following data for each compensation outlier: 
+employee ID, salary, and whether they are potentially overpaid or potentially underpaid */
+
+CREATE TABLE employee_pay(
+		employee_id INT,
+		salary INT,
+		title VARCHAR(20)
+	);
+INSERT INTO employee_pay 
+VALUES
+		(101,80000,'DATA ANALYST'),
+		(102,90000,'DATA ANALYST'),
+		(103,100000,'DATA ANALYST'),
+		(104,30000,'DATA ANALYST'),
+		(105,120000,'DATA SCIENTIST'),
+		(106,100000,'DATA SCIENTIST'),
+		(107,80000,'DATA SCIENTIST'),
+		(108,310000,'DATA SCIENTIST');
+        
+WITH pay_cte AS (
+					SELECT employee_id,
+							salary,
+							CASE
+								WHEN salary > 2*avg_salary THEN 'OVER PAID'
+								WHEN salary < avg_salary/2 THEN 'UNDER PAID'
+								END AS status
+					FROM (
+							SELECT *,
+									AVG(salary)OVER(PARTITION BY title) AS avg_salary
+							FROM employee_pay )e
+				)
+SELECT employee_id,
+		salary,
+		status	
+FROM pay_cte
+WHERE status IS NOT NULL
+
+
+Q.155 SAME AS Q.148
+
+
 /* Q.157 
 Say you have access to all the transactions for a given merchant acCOUNT. 
 Write a query to print the cumulative balance of the merchant acCOUNT at the END of each day, 
