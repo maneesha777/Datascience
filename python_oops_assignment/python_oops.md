@@ -78,51 +78,57 @@ The count variable acts as a class attribute. Class attributes remain the same f
 
 Q12. Where and how are instance attributes created?
 Ans. Instance attributes are attributes or properties attached to an instance of a class. Instance attributes are defined in the constructor using the self parameter i.e., they are defined in the __init__() function. Instance attributes are not shared by objects. Every object has its own copy of the instance attribute. Hence change in instance attribute for one object will not affect the other.
-# Class attribute & instance attribute
-class Student:
-    count = 0
 
-    def __init__(self, name, course):
-        self.name = name
-        self.course = course
-        Student.count += 1
+```{python}
+    # Class attribute & instance attribute
+        class Student:
+        count = 0
 
+        def __init__(self, name, course):
+            self.name = name
+            self.course = course
+            Student.count += 1
 
-Student1 = Student("manu", "Big Data")
-Student2 = Student("Diya", "Python")
+      Student1 = Student("manu", "Big Data")
+      Student2 = Student("Diya", "Python")
 
-print(Student1.name)
-print(Student2.name)
+     print(Student1.name)
+     print(Student2.name)
 
-print(Student1.count)
-print(Student2.count)
+    print(Student1.count)
+    print(Student2.count)
 
 Output
 manu
 Diya
 2
 2
+```
 Here name and course are instance attributes.
 
-Q13. What does the term "self" in a Python class mean?
+### Q13. What does the term "self" in a Python class mean?
+
 Ans.  Self represents the instance of the class. By using the “self” we can access the attributes and methods of the class in python. It binds the attributes with the given arguments. Self is always pointing to Current Object. It is not a keyword and the user can use a different parameter name in place of it.
 
-Q14. How does a Python class handle operator overloading?
+### Q14. How does a Python class handle operator overloading?
+
 Ans. Operator overloading is the process of using an operator in different ways depending on the operands. One can change the way an operator in Python works on different data-types.
 The user can overload all the existing operators, but they cannot create any new operator. Python provides some special functions, called magic functions for performing operator overloading. Magic methods in Python are special methods that begin and end with a double underscore( __ ).
 When we use an operator on user-defined data types then automatically a magic function associated with that operator is invoked. Changing the behavior of operator is as simple as changing the behavior of a method or function. You define methods in your class and operators work according to that behavior defined in methods. 
 
-Q15. When do you consider allowing operator overloading of your classes?
+### Q15. When do you consider allowing operator overloading of your classes?
+
 Ans. Consider two objects of a user-defined data type (physical representation of class), now if we try to add two objects with binary ‘+’ operator the compiler will throw an error because the compiler doesn’t know how to add two objects. To resolve this problem, we can define a method to overload the + operator to change its functionality as per our needs.
 To overload the ‘+' operator, we will use the __add__ magic method.
-Q16. What is the most popular form of operator overloading?
+
+### Q16. What is the most popular form of operator overloading?
 Ans.	
 a.	Binary operators overloading
 b.	Comparison operators overloading
 c.	Assignment operators overloading
 d.	Unary operators overloading
 
-Q17. What are the two most important concepts to grasp in order to comprehend Python OOP code?
+### Q17. What are the two most important concepts to grasp in order to comprehend Python OOP code?
 Ans. Two key concepts of OOPs are inheritance and polymorphism.
        Inheritance is one of the mechanisms to achieve the property of reusability. Inheritance allows programmer to create a general or a base class first and then later extend it to more specialized class.  The class that derives properties is called the derived class or child class and the class from which the properties are being derived is called the base class or parent class. It is transitive in nature, i.e., if class B inherits from another class A, then all the subclasses of B would automatically inherit from class A.
 Class BaseClass:
