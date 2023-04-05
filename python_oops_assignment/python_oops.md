@@ -43,6 +43,7 @@ To create instances of a class, you call the class using class name and pass in 
 
 `
     The syntax to create the instance of the class is given below:
+    
     Object_name = class_name (arguments)
 ` 
    
@@ -52,7 +53,9 @@ Ans. In Python, a class can be created by using the keyword class, followed by t
 
 `
     The syntax to create a class is given below:
+    
     class class_name:
+        
         # Statement
 `
 
@@ -156,7 +159,8 @@ To overload the ‘+' operator, we will use the *__add__* magic method.
 ```
 
 ### Q16. What is the most popular form of operator overloading?
-Ans.	
+Ans.
+
     1.	Binary operators overloading
     2.	Comparison operators overloading
     3.	Assignment operators overloading
@@ -226,64 +230,81 @@ Ans. In Python, a lambda function is a special type of function without the func
 Syntax: lambda arguments: expression
 We can assign a lambda function to a variable and then call that variable as a normal function
 
-Q31. Explain Inheritance in Python with an example?
-Ans. Create a class named Person, with firstname, lastname properties, and a printname and details as method. To create a class that inherits the functionality from another class, send the parent class as a parameter when creating the child class.
+### Q31. Explain Inheritance in Python with an example?
+
+Ans. Create a class named Person, with firstname, lastname and age as attributes, and a printname and details as method.
+
+To create a class that inherits the functionality from another class, send the parent class as a parameter when creating the child class.
 Create a class named Employee, which will inherit the properties and methods from the Person class.
 Now Employee class has the same properties and methods as the Person class.
 Use the Employee class to create an object, and then execute the details and printname method:
-# Parent class
 
-class Person:
-  def __init__(self, fname, lname, age):
-    self.firstname = fname
-    self.lastname = lname
-    self.age = age
+```{python}
+    # Parent class(Super class)
 
-  def printname(self):
-    print(self.firstname, self.lastname)
+    class Person:
+      def __init__(self, fname, lname, age):
+        self.firstname = fname
+        self.lastname = lname
+        self.age = age
 
-  def details(self):
-        print("My name is {}".format(self.firstname, self.lastname))
-        print("Age: {}".format(self.age))
+      def printname(self):
+        print(self.firstname, self.lastname)
 
-# Child class
+      def details(self):
+            print("My name is {}".format(self.firstname, self.lastname))
+            print("Age: {}".format(self.age))
 
-class Employee(Person):
-    def __init__(self, fname, lname, age, employeeid, salary, post):
-        self.employeeid = employeeid
-        self.salary = salary
-        self.post = post
-        Person.__init__(self, fname, lname, age)
-         
-    def details(self):
-        print("My name is {}".format(self.firstname, self.lastname))
-        print("Age: {}".format(self.age))
-        print("Employee Id: {}".format(self.employeeid))
-        print("Post: {}".format(self.post))
- 
-# object variable
-a=Employee('Madhav', 'Das', 23, 4578, 15000, 'Intern')
-a.printname()
-a.details()
+    # Child class(Subclass)
 
+    class Employee(Person):
+        def __init__(self, fname, lname, age, employeeid, salary, post):
+            self.employeeid = employeeid
+            self.salary = salary
+            self.post = post
+            Person.__init__(self, fname, lname, age)
 
-Output
-Madhav Das
-My name is Madhav
-Age: 23
-Employee Id: 4578
-Post: Intern
+        def details(self):
+            print("My name is {}".format(self.firstname, self.lastname))
+            print("Age: {}".format(self.age))
+            print("Employee Id: {}".format(self.employeeid))
+            print("Post: {}".format(self.post))
 
-Q32. Suppose class C inherits from classes A and B as class C(A,B).Classes A and B both have their own versions of method func(). If we call func() from an object of class C, which version gets invoked?
+    # object variable
+    a=Employee('Madhav', 'Das', 23, 4578, 15000, 'Intern')
+    a.printname()
+    a.details()
+
+-----------------------------
+    Output
+    Madhav Das
+    
+    My name is Madhav
+    Age: 23
+    Employee Id: 4578
+    Post: Intern
+```
+
+### Q32. Suppose class C inherits from classes A and B as class C(A,B). Classes A and B both have their own versions of method func(). If we call func() from an object of class C, which version gets invoked?
+
 Ans.
 
-Q33. Which methods/functions do we use to determine the type of instance and inheritance?
-Ans. Two built-in functions isinstance() and issubclass() are used to check inheritances. 
-Syntax: isinstance(object, classinfo) 
-The isinstance() function checks if the object (first argument) is an instance or subclass of the classinfo class (second argument). Classinfo can be class, type, or tuple of classes. For example, you can pass int, str, list, dict, or any user-created class. 
+### Q33. Which methods/functions do we use to determine the type of instance and inheritance?
+
+Ans. Two built-in functions *isinstance()* and *issubclass()* are used to check inheritances.
+
+`
+ Syntax: isinstance(object, classinfo) 
+` 
+The *isinstance()* function checks if the object (first argument) is an instance or subclass of the classinfo class (second argument). Classinfo can be class, type, or tuple of classes. 
+
+For example, you can pass int, str, list, dict, or any user-created class. 
 The function isinstance() returns True if the object is an instance of the class or other classes derived from it.
+ 
  The issubclass() method asks whether one class is a subclass of another class.
-Syntax: issubclass(class, classinfo)
+ `
+    Syntax: issubclass(class, classinfo)
+ `
  The issubclass() function checks if the class argument (first argument) is a subclass of classinfo class (second argument).
 
 Q34.Explain the use of the 'nonlocal' keyword in Python.
