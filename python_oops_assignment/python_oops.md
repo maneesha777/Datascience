@@ -3,7 +3,8 @@
 ## Python Oops Assignment
 
 
-Q1. What is the purpose of Python's OOP?
+### Q1. What is the purpose of Python's OOP?
+
 Ans.  Object-oriented Programming (OOPs) in Python, is a programming paradigm that uses objects and classes rather than function or logic in programming.  Object is a unit or block that comes with some unique characteristics (data) and methods. The object's data are its properties, that defines what it is, and the object's methods, are its functions, that defines what the object can do. It is also, an approach used for creating neat and reusable code instead of a redundant one. The program is divided into self-contained objects or several mini-programs. Every Individual object represents a different part of the application having its own logic and data to communicate within themselves. 
 Q2. Where does an inheritance search look for an attribute?
 Ans. 
