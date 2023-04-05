@@ -14,9 +14,8 @@ Ans.
 
 ### Q3. How do you distinguish between a class object and an instance object?
 Ans. There are two types of objects in python.
-
-	1. Class object
-	2. Instance object
+     1. Class object
+     2. Instance object
 
    |**Class object |  Instance object**  |
    |---       |  --- |
@@ -34,8 +33,8 @@ Ans. The first argument of every class method, including init is always named as
 
 ### Q5. What is the purpose of the init method?
 
-Ans. *|_|_init__* is a reserved method in python classes.  The __init__() doesn’t create an object but is automatically called once after every object creation. Hence, the __init__() is not a constructor. 
-Since Python will automatically call the __init__() method immediately after creating a new object, you can use the __init__() method to initialize the object’s attributes. If the __init__ has parameters other than the self, you need to pass the corresponding arguments when creating a new object.
+Ans. *\__init__* is a reserved method in python classes.  The __init__() doesn’t create an object but is automatically called once after every object creation. Hence, the *\__init__()* is not a constructor. 
+Since Python will automatically call the *\__init__()* method immediately after creating a new object, you can use the *\__init__()* method to initialize the object’s attributes. If the *\__init__()* has parameters other than the self, you need to pass the corresponding arguments when creating a new object.
 
 Q6. What is the process for creating a class instance?
 Ans. An instance of a class is an object. A class needs to be instantiated if we want to use the class attributes in another class or method. 
