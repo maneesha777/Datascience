@@ -17,23 +17,22 @@ Ans. There are two types of objects in python.
 	Class object
 	Instance object
 
-   |Class object                           |  Instance object  |
-   | :---       |  :---: |
-   |   Class is used as a template for declaring| 
-   |   and creating the objects.| 
-   |	A class is like a design or blueprint.|    
-   |	Class doesn’t exists physically.|
-   |	Whenever python encounters a class statement in the whole program then it creates a class object and assigns a name to that object i.e., class name. |
-   |	Class object inherits the attributes of its parent classes.|
-   |	When a class is created, no memory is allocated.|	
+   |Class object |  Instance object  |
+   | :---       |  :--- |
+   |   Class is used as a template for declaring and creating the objects.| When we call a class, it creates an instance of that class called object. |
+   |	A class is like a design or blueprint.|  Instance is a copy of the class with actual values. | 
+   |	Class doesn’t exists physically.| Instance objects are real objects i.e., it exists physically.|
+   |	Whenever python encounters a class statement in the whole program then it creates a class object and assigns a name to that object i.e., class name. | The instance object has access to attributes of the class from which it is created. |
+   |	Class object inherits the attributes of its parent classes.| Instance object inherits the attributes of the class from which it was created.|
+   |	When a class is created, no memory is allocated.|	Objects are allocated memory space whenever they are created.|
 
 
-When we call a class, it creates an instance of that class called object. 
-•	Instance is a copy of the class with actual values.
-•	Instance objects are real objects i.e., it exists physically.
-•	The instance object has access to attributes of the class from which it is created. 
-•	Instance object inherits the attributes of the class from which it was created.
-•	Objects are allocated memory space whenever they are created.
+
+	
+	
+	
+	
+	
 
 
 Q4. What makes the first argument in a class’s method function special?
