@@ -19,8 +19,8 @@ Ans. There are two types of objects in python.
 
    |Class object                           |  Instance object  |
    | :------------------------------       |  :---------------: |
-   |   Class is used as a template for declaring 
-   |and creating the objects.| 
+   |   Class is used as a template for declaring| 
+   |   and creating the objects.| 
    |	A class is like a design or blueprint.|    
    |	Class doesn’t exists physically.|
    |	Whenever python encounters a class statement in the whole program then it creates a class object and assigns a name to that object i.e., class name. |
