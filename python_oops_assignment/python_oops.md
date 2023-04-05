@@ -14,10 +14,11 @@ Ans.
 
 ### Q3. How do you distinguish between a class object and an instance object?
 Ans. There are two types of objects in python.
-	Class object
-	Instance object
 
-   |Class object |  Instance object  |
+	1. Class object
+	2. Instance object
+
+   |**Class object |  Instance object**  |
    |---       |  --- |
    |   Class is used as a template for declaring and creating the objects.| When we call a class, it creates an instance of that class called object. |
    |	A class is like a design or blueprint.|  Instance is a copy of the class with actual values. | 
@@ -26,21 +27,14 @@ Ans. There are two types of objects in python.
    |	Class object inherits the attributes of its parent classes.| Instance object inherits the attributes of the class from which it was created.|
    |	When a class is created, no memory is allocated.|	Objects are allocated memory space whenever they are created.|
 
+### Q4. What makes the first argument in a class’s method function special?
 
-
-	
-	
-	
-	
-	
-
-
-Q4. What makes the first argument in a class’s method function special?
 Ans. The first argument of every class method, including init is always named as self. It is the first parameter to the Instance method and constructor. If you don’t provide it, it will cause an error. 
         Self represents the instance of the class i.e, it always pointing to Current Object. By using the “self” we can access the attributes and methods of the class in python. It binds the attributes with the given arguments. 
 
-Q5. What is the purpose of the init method?
-Ans. "__init__" is a reserved method in python classes.  The __init__() doesn’t create an object but is automatically called once after every object creation. Hence, the __init__() is not a constructor. 
+### Q5. What is the purpose of the init method?
+
+Ans. *|_|_init__* is a reserved method in python classes.  The __init__() doesn’t create an object but is automatically called once after every object creation. Hence, the __init__() is not a constructor. 
 Since Python will automatically call the __init__() method immediately after creating a new object, you can use the __init__() method to initialize the object’s attributes. If the __init__ has parameters other than the self, you need to pass the corresponding arguments when creating a new object.
 
 Q6. What is the process for creating a class instance?
