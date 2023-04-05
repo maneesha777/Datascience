@@ -37,34 +37,40 @@ Ans. The first argument of every class method, including init is always named as
 Ans. *\__init__* is a reserved method in python classes.  The __init__() doesn’t create an object but is automatically called once after every object creation. Hence, the *\__init__()* is not a constructor. 
 Since Python will automatically call the *\__init__()* method immediately after creating a new object, you can use the *\__init__()* method to initialize the object’s attributes. If the *\__init__()* has parameters other than the self, you need to pass the corresponding arguments when creating a new object.
 
-Q6. What is the process for creating a class instance?
+### Q6. What is the process for creating a class instance?
 Ans. An instance of a class is an object. A class needs to be instantiated if we want to use the class attributes in another class or method. 
-To create instances of a class, you call the class using class name and pass in whatever arguments its __init__ method accepts.  All the instances share the attributes and the behavior of the class. 
+To create instances of a class, you call the class using class name and pass in whatever arguments its *\__init__* method accepts.  All the instances share the attributes and the behavior of the class. 
 
 `The syntax to create the instance of the class is given below:
 Object_name = class_name (arguments)` 
    
 
-Q7. What is the process for creating a class?
+### Q7. What is the process for creating a class?
 Ans. In Python, a class can be created by using the keyword class, followed by the class name. 
 
 `The syntax to create a class is given below:
 class class_name:
     # Statement`
 
-Q8. How would you define the super classes of a class?
-Ans. The class whose properties gets inherited by another class is known as superclass or parent class. the class which inherits the properties of another class is known as the subclass or child class. A subclass inherits all data and behavior of parent class.
-Inheritance is the property of an OOP language through which the data and behavior of a superclass can be passed onto a subclass. Inheritance is one of the mechanisms to achieve the re-use property of oops.
+### Q8. How would you define the super classes of a class?
+Ans. The class whose properties gets inherited by another class is known as superclass or parent class. 
 
-Q9. What is the relationship between classes and modules?
+The class which inherits the properties of another class is known as the subclass or child class. A subclass inherits all data and behavior of parent class.
+Inheritance is the property of an OOP language through which the data and behavior of a superclass can be passed onto a subclass. 
+Inheritance is one of the mechanisms to achieve the re-use property of oops.
+
+### Q9. What is the relationship between classes and modules?
 Ans. Python code is organized in files of .py extension called "modules" and groups of related modules called “packages". A module is a distinct unit that may have one or more closely-related classes, functions and variables. Modules need to be imported before they are read and used. To access the functions inside the module the dot(.) operator is used. 
 A class is used to define a blueprint for a given object, whereas a module is used to reuse a given piece of code inside another program. There is no limit on how many classes one can put in a module.
 Q10. How do you make instances and classes?
 Ans.
 
-Q11. Where and how should be class attributes created?
-Ans. Class attributes are the variables defined directly in the class that are shared by all objects of the class. Such attributes are defined inside class and outside __init__  usually at the top, for legibility. 
-To define a class attribute, you place it outside of the __init__() method. One can access the class attribute via instances of the class or via the class name.
+### Q11. Where and how should be class attributes created?
+Ans. Class attributes are the variables defined directly in the class that are shared by all objects of the class. 
+Such attributes are defined inside class and outside *\__init__* usually at the top, for legibility. 
+To define a class attribute, you place it outside of the *\__init__()* method. 
+One can access the class attribute via instances of the class or via the class name.
+*Class namespace* is used to store class attributes.
 
 ``` {python}
     # Class attribute
@@ -74,59 +80,83 @@ To define a class attribute, you place it outside of the __init__() method. One 
                 Student.count += 1 
  ```
         
-The count variable acts as a class attribute. Class attributes remain the same for every object.
+The count variable acts as a class attribute. Class attributes remain the same for every object i.e., it is shared between all the objects.
 
-Q12. Where and how are instance attributes created?
-Ans. Instance attributes are attributes or properties attached to an instance of a class. Instance attributes are defined in the constructor using the self parameter i.e., they are defined in the __init__() function. Instance attributes are not shared by objects. Every object has its own copy of the instance attribute. Hence change in instance attribute for one object will not affect the other.
+### Q12. Where and how are instance attributes created?
+Ans. Instance attributes are attributes or properties attached to an instance of a class. 
+Instance attributes are defined in the constructor using the self parameter i.e., they are defined in the *\__init__()* function. 
+Instance attributes are not shared by objects. Every object has its own copy of the instance attribute. 
+Hence change in instance attribute for one object will not affect the other.
 
 ```{python}
     # Class attribute & instance attribute
         class Student:
-        count = 0
+            count = 0
 
-        def __init__(self, name, course):
-            self.name = name
-            self.course = course
-            Student.count += 1
+            def __init__(self, name, course):
+                self.name = name
+                self.course = course
+                Student.count += 1
 
-      Student1 = Student("manu", "Big Data")
-      Student2 = Student("Diya", "Python")
+        S1 = Student("manu", "Big Data")
+        S2 = Student("Diya", "Python")
 
-     print(Student1.name)
-     print(Student2.name)
+        print(S1.name)
+        print(S2.name)
 
-    print(Student1.count)
-    print(Student2.count)
+        print(S1.count)
+        print(S2.count)
 
-Output
+# Output
 manu
 Diya
 2
 2
 ```
-Here name and course are instance attributes.
+Here name and course are instance attributes and count is class attribute.
 
 ### Q13. What does the term "self" in a Python class mean?
 
-Ans.  Self represents the instance of the class. By using the “self” we can access the attributes and methods of the class in python. It binds the attributes with the given arguments. Self is always pointing to Current Object. It is not a keyword and the user can use a different parameter name in place of it.
+Ans.  Self represents the instance of the class. It always pointing to Current Object.  Self allows access to the attributes and methods of each object in a class. It binds the attributes with the given arguments. Even before creating an object we refer objects as self .
 
 ### Q14. How does a Python class handle operator overloading?
 
-Ans. Operator overloading is the process of using an operator in different ways depending on the operands. One can change the way an operator in Python works on different data-types.
-The user can overload all the existing operators, but they cannot create any new operator. Python provides some special functions, called magic functions for performing operator overloading. Magic methods in Python are special methods that begin and end with a double underscore( __ ).
+Ans. Operator overloading is the process of using an operator in different ways depending on the operands. In python we can change the way an operator works on different data-types.
+The user can overload all the existing operators, but they cannot create any new operator. 
+Python provides some special functions, called *magic functions* for performing operator overloading. 
+Magic methods in Python are special methods that begin and end with a double underscore *( __ )*.
 When we use an operator on user-defined data types then automatically a magic function associated with that operator is invoked. Changing the behavior of operator is as simple as changing the behavior of a method or function. You define methods in your class and operators work according to that behavior defined in methods. 
 
 ### Q15. When do you consider allowing operator overloading of your classes?
 
-Ans. Consider two objects of a user-defined data type (physical representation of class), now if we try to add two objects with binary ‘+’ operator the compiler will throw an error because the compiler doesn’t know how to add two objects. To resolve this problem, we can define a method to overload the + operator to change its functionality as per our needs.
-To overload the ‘+' operator, we will use the __add__ magic method.
+Ans. Consider two objects of a user-defined data type (physical representation of class), now if we try to add two objects with binary ‘+’ operator the compiler will throw an error because the compiler doesn’t know how to add two objects. 
+
+To resolve this problem, we can define a method to overload the + operator to change its functionality as per our needs.
+To overload the ‘+' operator, we will use the *__add__* magic method.
+
+```{python}
+    class student:
+        def __init__(self, m1, m2):
+            self.m1 =m1
+            self.m2 =m2
+        def __add__(self, other):
+            t1 = self.m1+other.m1
+            t2 = self.m2+other.m2
+            s3 = student(t1, t2)
+            return s3
+
+    s1 = student(34, 48)
+    s2 = student(35, 42)
+    s3 = s1 + s2
+    print(s3.m2)
+```
 
 ### Q16. What is the most popular form of operator overloading?
 Ans.	
-a.	Binary operators overloading
-b.	Comparison operators overloading
-c.	Assignment operators overloading
-d.	Unary operators overloading
+    1.	Binary operators overloading
+    2.	Comparison operators overloading
+    3.	Assignment operators overloading
+    4.	Unary operators overloading
 
 ### Q17. What are the two most important concepts to grasp in order to comprehend Python OOP code?
 Ans. Two key concepts of OOPs are inheritance and polymorphism.
