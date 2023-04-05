@@ -40,14 +40,15 @@ Since Python will automatically call the *\__init__()* method immediately after 
 Q6. What is the process for creating a class instance?
 Ans. An instance of a class is an object. A class needs to be instantiated if we want to use the class attributes in another class or method. 
 To create instances of a class, you call the class using class name and pass in whatever arguments its __init__ method accepts.  All the instances share the attributes and the behavior of the class. 
-The syntax to create the instance of the class is given below:
-Object_name = class_name (arguments) 
+`The syntax to create the instance of the class is given below:
+Object_name = class_name (arguments)` 
    
 
 Q7. What is the process for creating a class?
-Ans. In Python, a class can be created by using the keyword class, followed by the class name. The syntax to create a class is given below:
+Ans. In Python, a class can be created by using the keyword class, followed by the class name. 
+`The syntax to create a class is given below:
 class class_name:
-    # Statement
+    # Statement`
 
 Q8. How would you define the super classes of a class?
 Ans. The class whose properties gets inherited by another class is known as superclass or parent class. the class which inherits the properties of another class is known as the subclass or child class. A subclass inherits all data and behavior of parent class.
@@ -62,11 +63,15 @@ Ans.
 Q11. Where and how should be class attributes created?
 Ans. Class attributes are the variables defined directly in the class that are shared by all objects of the class. Such attributes are defined inside class and outside __init__  usually at the top, for legibility. 
 To define a class attribute, you place it outside of the __init__() method. One can access the class attribute via instances of the class or via the class name.
-# Class attribute
-class Student:
-    count = 0
-    def __init__(self):
-        Student.count += 1 
+
+``` python
+    # Class attribute
+        class Student:
+        count = 0
+            def __init__(self):
+                Student.count += 1 
+ ```
+        
 The count variable acts as a class attribute. Class attributes remain the same for every object.
 
 Q12. Where and how are instance attributes created?
