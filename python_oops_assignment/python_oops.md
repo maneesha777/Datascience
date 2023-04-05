@@ -14,8 +14,9 @@ Ans.
 
 ### Q3. How do you distinguish between a class object and an instance object?
 Ans. There are two types of objects in python.
-     1. Class object
-     2. Instance object
+
+    1. Class object
+    2. Instance object
 
    |**Class object |  Instance object**  |
    |---       |  --- |
