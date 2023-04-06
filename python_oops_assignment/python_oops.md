@@ -10,7 +10,8 @@ Ans.  Object-oriented Programming (OOPs) in Python, is a programming paradigm th
 The main concept is to bind data and functions that works as a single unit and so, that no other part of the code can acess it.
 
 ### Q2. Where does an inheritance search look for an attribute?
-Ans. 
+ 
+ Ans. Inheritance search look for an attribute is based on **Method Resolution Order**. According to this the attributes is explored in the current class, if it is not present in the current class, then search moves to parent class(superclass) progressing from left to right by default. The search stops at the first place the attribute is found.
 
 ### Q3. How do you distinguish between a class object and an instance object?
 Ans. There are two types of objects in python.
@@ -312,7 +313,8 @@ Ans. The method invoked is determined by set of rules called **Method Resolution
 
 Ans. Two built-in functions *isinstance()* and *issubclass()* are used to check inheritances.
 
-    1. The *isinstance()* function checks if the object (first argument) is an instance or subclass of the classinfo class (second argument). Classinfo can be class, type, or tuple of classes. 
+   The *isinstance()* function checks if the object (first argument) is an instance or subclass of the classinfo class (second argument). 
+   Classinfo can be class, type, or tuple of classes. 
     
     `
         Syntax: isinstance(object, classinfo) 
@@ -321,7 +323,7 @@ Ans. Two built-in functions *isinstance()* and *issubclass()* are used to check 
    For example, you can pass int, str, list, dict, or any user-created class. 
    The function isinstance() returns True if the object is an instance of the class or other classes derived from it.
  
-    2.The issubclass() method asks whether one class is a subclass of another class.
+   The issubclass() method asks whether one class is a subclass of another class.
     
          `
             Syntax: issubclass(class, classinfo)
