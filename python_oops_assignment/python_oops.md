@@ -312,7 +312,8 @@ Ans. The method invoked is determined by set of rules called **Method Resolution
 
 Ans. Two built-in functions *isinstance()* and *issubclass()* are used to check inheritances.
 
-     The *isinstance()* function checks if the object (first argument) is an instance or subclass of the classinfo class (second argument). Classinfo can be class, type, or tuple of classes. 
+    1. The *isinstance()* function checks if the object (first argument) is an instance or subclass of the classinfo class (second argument). Classinfo can be class, type, or tuple of classes. 
+    
     `
         Syntax: isinstance(object, classinfo) 
     ` 
@@ -320,10 +321,12 @@ Ans. Two built-in functions *isinstance()* and *issubclass()* are used to check 
    For example, you can pass int, str, list, dict, or any user-created class. 
    The function isinstance() returns True if the object is an instance of the class or other classes derived from it.
  
-    The issubclass() method asks whether one class is a subclass of another class.
- `
-    Syntax: issubclass(class, classinfo)
- `
+    2.The issubclass() method asks whether one class is a subclass of another class.
+    
+         `
+            Syntax: issubclass(class, classinfo)
+         `
+         
  The issubclass() function checks if the class argument (first argument) is a subclass of classinfo class (second argument).
 
 Q34.Explain the use of the 'nonlocal' keyword in Python.
