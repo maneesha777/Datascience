@@ -287,21 +287,40 @@ Use the Employee class to create an object, and then execute the details and pri
 
 ### Q32. Suppose class C inherits from classes A and B as class C(A,B). Classes A and B both have their own versions of method func(). If we call func() from an object of class C, which version gets invoked?
 
-Ans.
+Ans. The method invoked is determined by set of rules called **Method Resolution Order**. When you create object of subclass it will call method of subclass first.
+ Here we have multiple inheritance, so the methods are executed based on the order specified while inheriting the class i.e., it will start from left to right. Hence the *fun()* from superclass A is invoked. 
+ 
+ ```{python}
+     class A:
+        def fun(self):
+            print("in class A")
+    class B:
+        def fun(self):
+            print("in class B")
+    # multiple inheritance
+    class C(A, B):
+        pass
+
+    a1 = C()
+    a1.fun()
+    
+    Output
+    in class A
+ ```
 
 ### Q33. Which methods/functions do we use to determine the type of instance and inheritance?
 
 Ans. Two built-in functions *isinstance()* and *issubclass()* are used to check inheritances.
 
-`
- Syntax: isinstance(object, classinfo) 
-` 
-The *isinstance()* function checks if the object (first argument) is an instance or subclass of the classinfo class (second argument). Classinfo can be class, type, or tuple of classes. 
+     The *isinstance()* function checks if the object (first argument) is an instance or subclass of the classinfo class (second argument). Classinfo can be class, type, or tuple of classes. 
+    `
+        Syntax: isinstance(object, classinfo) 
+    ` 
 
-For example, you can pass int, str, list, dict, or any user-created class. 
-The function isinstance() returns True if the object is an instance of the class or other classes derived from it.
+   For example, you can pass int, str, list, dict, or any user-created class. 
+   The function isinstance() returns True if the object is an instance of the class or other classes derived from it.
  
- The issubclass() method asks whether one class is a subclass of another class.
+    The issubclass() method asks whether one class is a subclass of another class.
  `
     Syntax: issubclass(class, classinfo)
  `
