@@ -48,21 +48,21 @@ Since Python will automatically call the *\__init__()* method immediately after 
 Ans. An instance of a class is an object. A class needs to be instantiated if we want to use the class attributes in another class or method. 
 To create instances of a class, you call the class using class name and pass in whatever arguments its *\__init__* method accepts.  All the instances share the attributes and the behavior of the class. 
 
-`The syntax to create the instance of the class is given below:
+    The syntax to create the instance of the class is given below:
     Object_name = class_name (arguments)
-` 
+ 
    
 
 ### Q7. What is the process for creating a class?
 Ans. In Python, a class can be created by using the keyword class, followed by the class name. 
 
-`
+
     The syntax to create a class is given below:
     
     class class_name:
         
         # Statement
-`
+
 
 ### Q8. How would you define the super classes of a class?
 Ans. The class whose properties gets inherited by another class is known as superclass or parent class. 
