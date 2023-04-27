@@ -192,11 +192,18 @@ Ans. Two key concepts of OOPs are inheritance and polymorphism.
 
 ### Q18. Describe three applications for exception processing.
 
-Ans.
+Ans. Errors that occur at runtime are called exceptions or logical errors. That is the program is syntactically correct, but the code results in an error.
+    Applications of exception processing  are when ;
+
+    1.try to open a file(for reading) that does not exist (FileNotFoundError)
+    2.try to divide a number by zero (ZeroDivisionError)
+    3.try to import a module that does not exist (ImportError) and so on.
+Whenever these types of runtime errors occur, Python creates an exception object.
 
 ### Q19. What happens if you don't do something extra to treat an exception?
 
-Ans. An exception object is created when a Python script raises an exception. If the script explicitly doesn't handle the exception, the program will be forced to terminate abruptly.The programs usually do not handle exceptions, and result in error messages.
+Ans. An exception object is created when a Python script raises an exception. If not handled properly, it prints a traceback to that error along with some details about why that error occurred.
+The programs usually do not handle exceptions, and result in error messages.
 
 ### Q20. What are your options for recovering from an exception in your script?
 
