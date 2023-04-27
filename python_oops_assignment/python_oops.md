@@ -202,8 +202,7 @@ Whenever these types of runtime errors occur, Python creates an exception object
 
 ### Q19. What happens if you don't do something extra to treat an exception?
 
-Ans. An exception object is created when a Python script raises an exception. If not handled properly, it prints a traceback to that error along with some details about why that error occurred.
-The programs usually do not handle exceptions, and result in error messages.
+Ans. An exception object is created when a Python script raises an exception. If not handled properly, it prints a traceback to that error along with some details about why that error occurred and the program terminates abruptly. Then the code past the line that caused the exception will not get executed.
 
 ### Q20. What are your options for recovering from an exception in your script?
 
