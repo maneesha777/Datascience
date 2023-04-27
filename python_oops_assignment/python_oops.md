@@ -206,7 +206,12 @@ Ans. An exception object is created when a Python script raises an exception. If
 
 ### Q20. What are your options for recovering from an exception in your script?
 
-Ans.
+Ans.Exception handling is managed by the following 5 keywords:
+
+    1.try
+    2.catch
+    3.finally
+    4.throw
 
 ### Q21. Describe two methods for triggering exceptions in your script.
 Ans.
