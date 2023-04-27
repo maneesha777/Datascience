@@ -220,7 +220,13 @@ Ans.
 Ans.
 
 ### Q23. What is the purpose of the try statement?
-Ans.
+Ans.A try statement includes keyword try, followed by a colon (:) and a suite of code in which exceptions may occur.
+
+` Syntax
+      try:
+      statement(s) `
+   
+ Statements that can raise exceptions are kept inside the try clause and the statements that handle the exception are written inside except clause.  
 
 ### Q24. What are the two most popular try statement variations?
 Ans.
