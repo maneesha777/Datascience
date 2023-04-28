@@ -233,13 +233,14 @@ Ans.  In Python, keywords else and finally can also be used along with the try a
       
    Since the code in the “finally” block always runs, you want to keep your “clean up” codes here, such as:
 
-    1. Writing status messages to log files
+   ` 1. Writing status messages to log files
     2. Resetting counters, lists, arrays
     3. Closing open files
     4. Closing database connections
-    5.Resetting object variables and so on..
+    5.Resetting object variables and so on.. `
     
-      2. Try else
+     
+     2. Try else
    The else clause is executed if and only if no exception is raised. This is different from the finally clause that’s always executed.
    
             `Syntax:
@@ -318,8 +319,8 @@ Ans. Special Symbols Used for passing arguments are:
 
 Ans. The point to be taken care while passing without using keyword arguments is :
 -	The order in which parameters are defined in function should be maintained while calling the function.
--		The values for the non-optional parameters should be passed otherwise it will throw an error.
--			The value of the default arguments can be either passed or ignored.
+-	The values for the non-optional parameters should be passed otherwise it will throw an error.
+-	The value of the default arguments can be either passed or ignored.
 
 In case of Passing keyword arguments, the parameters in functions are written in the form “datatype keyword-name”. So, the functions are called using the keyword name for passing the values. This relieves the programmer from learning the order in which the parameters are to be passed.There should be no difference between the passed and declared keyword names.
 
