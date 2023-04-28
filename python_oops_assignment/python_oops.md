@@ -233,10 +233,14 @@ Ans.  In Python, keywords else and finally can also be used along with the try a
       
    Since the code in the “finally” block always runs, you want to keep your “clean up” codes here, such as:
 
-   ` 1. Writing status messages to log files
+   `1. Writing status messages to log files 
+   
     2. Resetting counters, lists, arrays
+    
     3. Closing open files
+    
     4. Closing database connections
+    
     5.Resetting object variables and so on.. `
     
      
