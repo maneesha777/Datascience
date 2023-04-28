@@ -226,7 +226,8 @@ Ans.A try statement includes keyword try, followed by a colon (:) and a suite of
       try:
       statement(s) `
    
- Statements that can raise exceptions are kept inside the try clause and the statements that handle the exception are written inside except clause.  
+ Statements that can raise exceptions are kept inside the try block and the statements that handle the exception are written inside except clause. 
+The code inside the try block will execute when there is no error in the program. Whereas the code inside the except block will execute whenever the program encounters some error in the preceding try block. 
 
 ### Q24. What are the two most popular try statement variations?
 Ans.
