@@ -219,7 +219,7 @@ Ans. Raise – Triggers an exception manually using custom exceptions.
 ### Q22. Identify two methods for specifying actions to be executed at termination time, regardless of whether or not an exception exists.
 Ans.  In Python, keywords else and finally can also be used along with the try and except clauses.      
           
-    1. Try/Except/Finally
+   1. Try/Except/Finally
    The finally block consists of statements which should be processed regardless of an exception occurring in the try block or not. As a consequence, the error-free try block skips the except clause and enters the finally block. If, there's an exception in the try block, the appropriate except block will be processed, and the statements in the finally block will be processed before proceeding to the rest of the code. 
           
           `Syntax:
@@ -233,7 +233,6 @@ Ans.  In Python, keywords else and finally can also be used along with the try a
       
    Since the code in the “finally” block always runs, you want to keep your “clean up” codes here, such as:
 
-   
       1. Writing status messages to log files 
 
       2. Resetting counters, lists, arrays
@@ -246,8 +245,8 @@ Ans.  In Python, keywords else and finally can also be used along with the try a
     
     
      
-    `2. Try else
-    `
+   2. Try else
+    
    The else clause is executed if and only if no exception is raised. This is different from the finally clause that’s always executed.
    
             `Syntax:
