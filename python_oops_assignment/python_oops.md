@@ -217,7 +217,19 @@ Ans.Exception handling is managed by the following 5 keywords:
 Ans.
 
 ### Q22. Identify two methods for specifying actions to be executed at termination time, regardless of whether or not an exception exists.
-Ans.
+Ans.  In Python, keywords else and finally can also be used along with the try and except clauses.      
+          
+    1. Try/Except/Finally
+   When attaching a finally statement to the end of a try/except, this code will be executed after the try has been completed, regardless of exceptions.
+          
+          `Syntax:
+
+            try:
+                # Some Code
+            except:
+                # Executed if error in the try block
+            finally:
+                # Some code .....(always executed) `
 
 ### Q23. What is the purpose of the try statement?
 Ans.A try statement includes keyword try, followed by a colon (:) and a suite of code in which exceptions may occur.
