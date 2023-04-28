@@ -214,13 +214,13 @@ Ans.Exception handling is managed by the following 5 keywords:
     4.throw
 
 ### Q21. Describe two methods for triggering exceptions in your script.
-Ans.
+Ans. Raise – Triggers an exception manually using custom exceptions.
 
 ### Q22. Identify two methods for specifying actions to be executed at termination time, regardless of whether or not an exception exists.
 Ans.  In Python, keywords else and finally can also be used along with the try and except clauses.      
           
     1. Try/Except/Finally
-   When attaching a finally statement to the end of a try/except, this code will be executed after the try has been completed, regardless of exceptions.
+   The finally block consists of statements which should be processed regardless of an exception occurring in the try block or not. As a consequence, the error-free try block skips the except clause and enters the finally block. If, there's an exception in the try block, the appropriate except block will be processed, and the statements in the finally block will be processed before proceeding to the rest of the code. 
           
           `Syntax:
 
@@ -230,6 +230,26 @@ Ans.  In Python, keywords else and finally can also be used along with the try a
                 # Executed if error in the try block
             finally:
                 # Some code .....(always executed) `
+      
+   Since the code in the “finally” block always runs, you want to keep your “clean up” codes here, such as:
+
+    1. Writing status messages to log files
+    2. Resetting counters, lists, arrays
+    3. Closing open files
+    4. Closing database connections
+    5.Resetting object variables and so on..
+    
+      2. Try else
+   The else clause is executed if and only if no exception is raised. This is different from the finally clause that’s always executed.
+   
+            `Syntax:
+
+                   try:
+                       # Some Code
+                   except:
+                       # Executed if error in the try block
+                   else:
+                       # execute if no exception  `
 
 ### Q23. What is the purpose of the try statement?
 Ans.A try statement includes keyword try, followed by a colon (:) and a suite of code in which exceptions may occur.
@@ -242,11 +262,23 @@ Ans.A try statement includes keyword try, followed by a colon (:) and a suite of
 The code inside the try block will execute when there is no error in the program. Whereas the code inside the except block will execute whenever the program encounters some error in the preceding try block. 
 
 ### Q24. What are the two most popular try statement variations?
-Ans.
+Ans. Try/except and try/except/except, are two different variations of try statement.
+
+You can define as many exception blocks as you want, i.e., multiple except clauses with different exception types in a single try block. Each except block will address a specific type of error. If the type of exception doesn't match any of the except blocks, it will remain unhandled and the program will terminate.
+
+` Syntax
+       try:
+         program code
+       except Exception Error Type 1:
+              exception handling code
+       except Exception Error Type 2:
+              exception handling code
+       except Exception Error Type :
+              exception handling code `
 
 ### Q25. What is the purpose of the raise statement?
 
-Ans. The raise keyword is used to raise an exception. It raises an error and stops the control flow of the program. 
+Ans. The raise keyword is used to throw a Python exception manually. It raises an error and stops the control flow of the program.  You can define what kind of error to raise, and the text to print to the user.
 
     Syntax: raise  {name_of_ the_ exception_class}
     
