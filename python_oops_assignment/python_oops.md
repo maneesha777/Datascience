@@ -233,7 +233,8 @@ Ans.  In Python, keywords else and finally can also be used along with the try a
       
    Since the code in the “finally” block always runs, you want to keep your “clean up” codes here, such as:
 
-   `1. Writing status messages to log files 
+   `
+    1. Writing status messages to log files 
    
     2. Resetting counters, lists, arrays
     
@@ -241,7 +242,8 @@ Ans.  In Python, keywords else and finally can also be used along with the try a
     
     4. Closing database connections
     
-    5.Resetting object variables and so on.. `
+    5.Resetting object variables and so on.. 
+    `
     
      
      2. Try else
@@ -271,15 +273,18 @@ Ans. Try/except and try/except/except, are two different variations of try state
 
 You can define as many exception blocks as you want, i.e., multiple except clauses with different exception types in a single try block. Each except block will address a specific type of error. If the type of exception doesn't match any of the except blocks, it will remain unhandled and the program will terminate.
 
-` Syntax
-       try:
-         program code
-       except Exception Error Type 1:
-              exception handling code
-       except Exception Error Type 2:
-              exception handling code
-       except Exception Error Type :
-              exception handling code `
+ 
+ 
+    Syntax
+           try:
+             program code
+           except Exception Error Type 1:
+                  exception handling code
+           except Exception Error Type 2:
+                  exception handling code
+           except Exception Error Type :
+                  exception handling code
+      
 
 ### Q25. What is the purpose of the raise statement?
 
